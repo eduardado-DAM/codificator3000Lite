@@ -1,5 +1,8 @@
 package ceu.dam.edusoft.gui.controller;
 
+import ceu.dam.edusoft.gui.util.C3kUtil;
+import ceu.dam.edusoft.gui.util.FXMLPATH;
+import ceu.dam.edusoft.gui.util.FadeTask;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;

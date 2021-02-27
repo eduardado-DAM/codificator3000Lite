@@ -1,5 +1,6 @@
-package ceu.dam.edusoft.gui.controller;
+package ceu.dam.edusoft.gui.util;
 
+import ceu.dam.edusoft.gui.controller.MainMenuController;
 import javafx.animation.FadeTransition;
 import javafx.concurrent.Task;
 import javafx.scene.image.ImageView;

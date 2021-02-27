@@ -7,8 +7,8 @@ import javax.crypto.NoSuchPaddingException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -22,13 +22,16 @@ public class RSAService {
     public static final String PUBLIC = "publicKey.key";
     public static final String PRIVATE = "privateKey.key";
 
+    public static void main(String[] args) {
+        generateKeys();
+        String mensajeClaro = "blas";
+        String mensajeCifrado = cifra(mensajeClaro);
+        System.out.println("mensaje cifrado" + mensajeCifrado);
+        String mensajeDescifrado = descifra(mensajeCifrado);
+        System.out.println("mensaje descifrado " + mensajeDescifrado);
+    }
 
-    /**
-     * Produce una clave pública y una clave privada y las almacena en base64 dentro del directorio
-     * especificado en KEY_PATH
-     */
-    public static void generateKeyPair() {
-
+    public static void generateKeys() {
         try {
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
             keyPairGenerator.initialize(1024);
@@ -37,131 +40,86 @@ public class RSAService {
             PublicKey publicKey = keyPair.getPublic();
             PrivateKey privateKey = keyPair.getPrivate();
 
-
-            // Obtiene la clave pública y la codifica en base64 antes de guardarla en un fichero
             File filePublicKey = new File(KEY_PATH + PUBLIC);
             FileOutputStream fileOutputStream = new FileOutputStream(filePublicKey);
-            byte[] encodedPublicKey = publicKey.getEncoded();
-            String b64PublicKey = Base64.getEncoder().encodeToString(encodedPublicKey);
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
-            outputStreamWriter.write(b64PublicKey);
-            outputStreamWriter.flush();
-            outputStreamWriter.close();
+            fileOutputStream.write(publicKey.getEncoded()); //?
+            fileOutputStream.flush();
             fileOutputStream.close();
 
-
-            // Obtiene la clave privada y la codifica en base64 antes de guardarla en un fichero
             File filePrivateKey = new File(KEY_PATH + PRIVATE);
             FileOutputStream fileOutputStream2 = new FileOutputStream(filePrivateKey);
-            byte[] encodedPrivateKey = privateKey.getEncoded();
-            String b64PrivateKey = Base64.getEncoder().encodeToString(encodedPrivateKey);
-            OutputStreamWriter outputStreamWriter2 = new OutputStreamWriter(fileOutputStream2);
-            outputStreamWriter2.write(b64PrivateKey);
-            outputStreamWriter2.flush();
-            outputStreamWriter2.close();
+            fileOutputStream2.write(privateKey.getEncoded());
+            fileOutputStream2.flush();
             fileOutputStream2.close();
 
-            /*fileOutputStream2.write(privateKey.getEncoded());
-            fileOutputStream2.flush();
-            fileOutputStream2.close();*/
-
             System.out.println("Claves generadas correctamente");
-
-        } catch (Exception e) {
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
-    public static String cifra(String clearMsg)  {
-
-        Scanner scanner = null;
-        String b64Result = null;
+    public static String cifra(String clearMsg) {
+        String cipheredMsg = null;
 
         try {
-            // RECUPERACIÓN DE LA CLAVE PÚBLICA
+            // Recupera la clave pública del fichero
+            File filePublicKey = new File(KEY_PATH + PUBLIC); // obtiene referencia al fichero de clave pública
+            byte[] fileContent = Files.readAllBytes(filePublicKey.toPath()); //lee el fichero de bytes y lo almacena en un array de bytes
 
-            File filePubK = new File(KEY_PATH + PUBLIC );
-            scanner = new Scanner(filePubK);
-            String b64clavePublica = "";
-            while (scanner.hasNextLine()){
-                b64clavePublica += scanner.nextLine();
-            }
-
-            //ahora tenemos que decodificar la clave pública antes de poder usarla
-            byte[] clavePublica = Base64.getDecoder().decode(b64clavePublica);
-
-            X509EncodedKeySpec keySpec = new X509EncodedKeySpec(clavePublica);
+            X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(fileContent);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            PublicKey publicKey = keyFactory.generatePublic(keySpec);
+            PublicKey publicKey = keyFactory.generatePublic(x509EncodedKeySpec);
 
-            //Obtención del cifrador
+            // Obtiene el cifrador
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 
-            // cifra el mensaje
+            // Cifra el mensaje de entrada
             byte[] result = cipher.doFinal(clearMsg.getBytes());
 
-            b64Result = Base64.getEncoder().encodeToString(result);
-            System.out.println("Mensaje Cifrado:" + b64Result);
-
-
-
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException | FileNotFoundException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+            // Convierte el resultado a base64 (mejora legibilidad)
+            cipheredMsg = Base64.getEncoder().encodeToString(result);
+            System.out.println(cipheredMsg);
+        } catch (IOException | BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | InvalidKeySpecException | NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } finally {
-            scanner.close();
         }
 
+        return cipheredMsg;
 
-        return b64Result;
     }
 
-    public static String descifra(String codedMsg){
-        // RECUPERACIÓN DE LA CLAVE PRIVADA
-        String decipheredMsg = null;
-        Scanner scanner = null;
-
+    public static String descifra(String cipheredMsg) {
+        String clearMsg = null;
 
 
         try {
-            //instanciamos un file
-            File filePrivKey = new File(KEY_PATH + PRIVATE );
-            //leemos la clave privada que está en base64 (caracteres)
-            scanner = new Scanner(filePrivKey);
-            String b64clavePrivada = "";
-            while (scanner.hasNextLine()){
-                b64clavePrivada += scanner.nextLine();
-            }
-
-            //ahora tenemos que decodificar la clave privada antes de poder usarla
-            byte[] clavePrivada = Base64.getDecoder().decode(b64clavePrivada);
-
-            //terminamos de obtener la clave privada
-            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(clavePrivada);
+            // Recupera la clave privada
+            File filePrivateKey = new File(KEY_PATH + PRIVATE);
+            byte[] fileContent = Files.readAllBytes(filePrivateKey.toPath());
+            PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(fileContent);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
+            PrivateKey privateKey = keyFactory.generatePrivate(pkcs8EncodedKeySpec);
 
-            //Obtener descifrador
+            // Obtiene desfricrador
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
 
-            //descifra usando clave privada
-            byte[] result = cipher.doFinal(codedMsg.getBytes());
+            // Obtiene mensaje cifrado original decodificando el base64
+            byte[] msg = Base64.getDecoder().decode(cipheredMsg.getBytes());
 
-            //transformamos los bytes a cadena
-            decipheredMsg = new String(result);
-            System.out.println("Mensaje descifrado: " + decipheredMsg);
+            // Descifra usando clave privada
+            byte[] result = cipher.doFinal(msg);
 
-
-        } catch (FileNotFoundException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeySpecException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
+            // Convierte bytes a cadena
+            clearMsg = new String(result);
+        } catch (IOException | BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | InvalidKeySpecException | NoSuchAlgorithmException e) {
             e.printStackTrace();
-        }finally {
-            scanner.close();
         }
 
-        return decipheredMsg;
-
+        return clearMsg;
 
     }
+
 }

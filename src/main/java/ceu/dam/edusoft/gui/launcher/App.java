@@ -1,13 +1,12 @@
 package ceu.dam.edusoft.gui.launcher;
 
 import ceu.dam.edusoft.gui.controller.AppController;
-import ceu.dam.edusoft.gui.controller.FXMLPATH;
+import ceu.dam.edusoft.gui.util.FXMLPATH;
 import ceu.dam.edusoft.service.RSAService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -35,7 +34,7 @@ public class App extends Application {
         mainMenuController.init(); //arranca los funciones iniciales del controlador de la escena
 
         //carga de clave pública y privada cada vez que se carga la aplicación
-        RSAService.generateKeyPair();
+        RSAService.generateKeys();
 
     }
 

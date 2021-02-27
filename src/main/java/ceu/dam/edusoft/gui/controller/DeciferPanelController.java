@@ -1,14 +1,15 @@
 package ceu.dam.edusoft.gui.controller;
 
+import ceu.dam.edusoft.gui.util.C3kUtil;
+import ceu.dam.edusoft.service.RSAService;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
@@ -25,7 +26,6 @@ public class DeciferPanelController extends AppController implements EventHandle
 
     @FXML
     private TextArea taLienzo;
-
 
 
     @FXML
@@ -54,11 +54,15 @@ public class DeciferPanelController extends AppController implements EventHandle
 
     private void addButtonEvents() {
 
+        //gráficos
         btDescifrar.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, this);
         btDescifrar.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, this);
 
         btDescifrar.addEventHandler(MouseEvent.MOUSE_PRESSED, this);
         btDescifrar.addEventHandler(MouseEvent.MOUSE_RELEASED, this);
+
+        //navegación y acciones
+        btDescifrar.addEventHandler(ActionEvent.ACTION, this);
     }
 
     private void labelTransparent() {
@@ -98,22 +102,33 @@ public class DeciferPanelController extends AppController implements EventHandle
     @Override
     public void handle(Event event) {
 
-        Glow glow = new Glow();
-        glow.setLevel(10);
-        if (event.getEventType().equals(MouseEvent.MOUSE_ENTERED)) {
-            ((Button) event.getSource()).setEffect(glow);
+        EventType eventType = event.getEventType();
+        // los eventos para hacer brillar los botones se repiten mucho
+        if(eventType.equals(MouseEvent.MOUSE_ENTERED) || eventType.equals(MouseEvent.MOUSE_EXITED) ){
+
+            C3kUtil.handleC3KMouseEvents(event);
+        }else if(event.getEventType().equals(ActionEvent.ACTION)){
+
+            Button button = (Button) event.getSource();
+            String buttonId = button.getId();
+
+            if(buttonId.equals(btDescifrar.getId())){
+                String clearString = deciferMsg(taLienzo.getText()); //descifra el mensaje
+                taDescifrado.setText(clearString); //lo muestra al usuario
+
+            }
+
+
         }
-        if (event.getEventType().equals(MouseEvent.MOUSE_EXITED)) {
-            ((Button) event.getSource()).setEffect(null);
-        }
-        if (event.getEventType().equals(MouseEvent.MOUSE_PRESSED)) {
-            ColorAdjust colorAdjust = new ColorAdjust();
-            colorAdjust.setBrightness(5);
-            ((Button) event.getSource()).setEffect(colorAdjust);
-        }
-        if (event.getEventType().equals(MouseEvent.MOUSE_RELEASED)) {
-            ((Button) event.getSource()).setEffect(null);
-        }
+
+
+    }
+
+    private String deciferMsg(String codedMsg) {
+        return RSAService.descifra(codedMsg);
+    }
+
+    private void handleGraphicEvents(Event event) {
 
     }
 }
