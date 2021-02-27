@@ -5,7 +5,6 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,23 +13,20 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-import java.util.Scanner;
 
+/**
+ * Esta clase está pensada para generar un par ClavePública y ClavePrivada de manera automática cada vez
+ * que se carga la aplicación y almacenarlas en un sitio fijo relativo al proyecto
+ */
 public class RSAService {
 
     public static final String KEY_PATH = "src/main/resources/ceu/dam/edusoft/rsaKey/";
-    public static final String PUBLIC = "publicKey.key";
-    public static final String PRIVATE = "privateKey.key";
+    public static final String PUBLIC_AUTO = "publicKey.key";
+    public static final String PRIVATE_AUTO = "privateKey.key";
 
-    public static void main(String[] args) {
-        generateKeys();
-        String mensajeClaro = "blas";
-        String mensajeCifrado = cifra(mensajeClaro);
-        System.out.println("mensaje cifrado" + mensajeCifrado);
-        String mensajeDescifrado = descifra(mensajeCifrado);
-        System.out.println("mensaje descifrado " + mensajeDescifrado);
-    }
-
+    /**
+     * Genera un par clave pública / clave privada y lo almacena en KEY_PATH
+     */
     public static void generateKeys() {
         try {
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
@@ -40,13 +36,13 @@ public class RSAService {
             PublicKey publicKey = keyPair.getPublic();
             PrivateKey privateKey = keyPair.getPrivate();
 
-            File filePublicKey = new File(KEY_PATH + PUBLIC);
+            File filePublicKey = new File(KEY_PATH + PUBLIC_AUTO);
             FileOutputStream fileOutputStream = new FileOutputStream(filePublicKey);
             fileOutputStream.write(publicKey.getEncoded()); //?
             fileOutputStream.flush();
             fileOutputStream.close();
 
-            File filePrivateKey = new File(KEY_PATH + PRIVATE);
+            File filePrivateKey = new File(KEY_PATH + PRIVATE_AUTO);
             FileOutputStream fileOutputStream2 = new FileOutputStream(filePrivateKey);
             fileOutputStream2.write(privateKey.getEncoded());
             fileOutputStream2.flush();
@@ -60,12 +56,18 @@ public class RSAService {
         }
     }
 
+    /**
+     * Cifra un string usando las claves generadas por generateKeys() en el directorio
+     * KEY_PATH
+     * @param clearMsg
+     * @return
+     */
     public static String cifra(String clearMsg) {
         String cipheredMsg = null;
 
         try {
             // Recupera la clave pública del fichero
-            File filePublicKey = new File(KEY_PATH + PUBLIC); // obtiene referencia al fichero de clave pública
+            File filePublicKey = new File(KEY_PATH + PUBLIC_AUTO); // obtiene referencia al fichero de clave pública
             byte[] fileContent = Files.readAllBytes(filePublicKey.toPath()); //lee el fichero de bytes y lo almacena en un array de bytes
 
             X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(fileContent);
@@ -90,13 +92,19 @@ public class RSAService {
 
     }
 
+    /**
+     * Descifra un string usando las claves generadas por generateKeys() en el directorio
+     * KEY_PATH
+     * @param cipheredMsg
+     * @return
+     */
     public static String descifra(String cipheredMsg) {
         String clearMsg = null;
 
 
         try {
             // Recupera la clave privada
-            File filePrivateKey = new File(KEY_PATH + PRIVATE);
+            File filePrivateKey = new File(KEY_PATH + PRIVATE_AUTO);
             byte[] fileContent = Files.readAllBytes(filePrivateKey.toPath());
             PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(fileContent);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");

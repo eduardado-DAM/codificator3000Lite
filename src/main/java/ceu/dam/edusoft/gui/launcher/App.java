@@ -33,8 +33,7 @@ public class App extends Application {
         mainMenuController.setBpWindow(mainMenuController.getBpWindow()); //asigna, en el controlador padre, quíen es el famoso BorderPaneWindow
         mainMenuController.init(); //arranca los funciones iniciales del controlador de la escena
 
-        //carga de clave pública y privada cada vez que se carga la aplicación
-        RSAService.generateKeys();
+
 
     }
 

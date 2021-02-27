@@ -1,10 +1,15 @@
 package ceu.dam.edusoft.gui.util;
 
+import ceu.dam.edusoft.gui.controller.AppController;
+import ceu.dam.edusoft.service.RSAService;
 import javafx.event.Event;
 import javafx.scene.control.Button;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
+
+import java.io.File;
 
 public class C3kUtil {
 
@@ -35,6 +40,28 @@ public class C3kUtil {
         if (event.getEventType().equals(MouseEvent.MOUSE_RELEASED)) {
             ((Button) event.getSource()).setEffect(null);
         }
+    }
+
+    /**
+     *
+     * @param title
+     */
+
+    /**
+     * Muestra al usuario un selecto de archivos
+     * @param title
+     * @return un File con el archivo seleccionado por el usuario
+     */
+    public static File selectFile(String title) {
+        File filechosen;
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(title);
+
+        fileChooser.setInitialDirectory(new File(RSAService.KEY_PATH));
+        filechosen = fileChooser.showOpenDialog(AppController.getStage());
+
+        return filechosen;
     }
 
     public class ErrorString {

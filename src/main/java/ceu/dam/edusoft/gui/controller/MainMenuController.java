@@ -1,8 +1,10 @@
 package ceu.dam.edusoft.gui.controller;
 
+import ceu.dam.edusoft.gui.util.AppKeys;
 import ceu.dam.edusoft.gui.util.C3kUtil;
 import ceu.dam.edusoft.gui.util.FXMLPATH;
 import ceu.dam.edusoft.gui.util.FadeTask;
+import ceu.dam.edusoft.service.RSAService;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -15,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
+import java.io.File;
 import java.io.IOException;
 
 public class MainMenuController extends AppController implements EventHandler {
@@ -67,6 +70,8 @@ public class MainMenuController extends AppController implements EventHandler {
 
         setCurrentController(this); //se establece como controlador en uso en el controlador padre
 
+        generateAppKeys();
+
         fadeLogo();
 
         addButtonEvents();
@@ -74,6 +79,14 @@ public class MainMenuController extends AppController implements EventHandler {
         labelTransparent();
 
 
+    }
+
+    /**
+     * Genera claves y las asigna al controlador padre
+     */
+    private void generateAppKeys() {
+        AppKeys appKeys = new AppKeys();
+        setAppKeys(appKeys);
     }
 
 
@@ -210,10 +223,20 @@ public class MainMenuController extends AppController implements EventHandler {
                 C3kUtil.informUser(C3kUtil.ErrorString.ES_PANEL_CHANGE_ERROR);
             }
             if (buttonId.equals(btLoadPublicKey.getId())) {
-                //todo implementar filechooser
+                File publicKeyFileChosen = C3kUtil.selectFile("Select Public key");
+                if (publicKeyFileChosen != null){
+                    System.out.println("antigua clave pública" + getAppKeys().getPublicKeyFile().toPath());
+                    getAppKeys().setPublicKeyFile(publicKeyFileChosen);
+                    System.out.println("nueva clave pública asignada" + getAppKeys().getPublicKeyFile().toPath()); //todo informar al usuario
+                }
             }
             if (buttonId.equals(btLoadPrivateKey.getId())) {
-                //todo implementar filechooser
+                File privateKeyFilechosen = C3kUtil.selectFile("Select Public key");
+                if (privateKeyFilechosen != null){
+                    System.out.println("antigua clave privada " + getAppKeys().getPublicKeyFile().toPath());
+                    getAppKeys().setPublicKeyFile(privateKeyFilechosen);
+                    System.out.println("nueva clave privada asignada" + getAppKeys().getPublicKeyFile().toPath()); //todo informar al usuario
+                }
             }
 
 
@@ -221,4 +244,5 @@ public class MainMenuController extends AppController implements EventHandler {
 
 
     }
+
 }

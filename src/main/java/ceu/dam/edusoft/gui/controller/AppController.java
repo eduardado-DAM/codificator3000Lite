@@ -1,5 +1,6 @@
 package ceu.dam.edusoft.gui.controller;
 
+import ceu.dam.edusoft.gui.util.AppKeys;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -28,7 +29,11 @@ public abstract class AppController {
 
     private AppController currentPaneController; //El controlador del Panel que está en uso
 
+    public AppKeys getAppKeys() {
+        return appKeys;
+    }
 
+    private AppKeys appKeys; // Las claves Pública y Privada de la aplicación
 
 
     public AppController() {
@@ -41,6 +46,10 @@ public abstract class AppController {
 
     public AppController getCurrentPaneController() {
         return currentPaneController;
+    }
+
+    protected void setAppKeys(AppKeys appKeys){
+        this.appKeys = (appKeys);
     }
 
     /**
