@@ -238,10 +238,10 @@ public class MainMenuController extends AppController implements EventHandler {
                 C3kUtil.informUser(C3kUtil.ErrorString.ES_PANEL_CHANGE_ERROR);
             }
             if (buttonId.equals(btLoadPublicKey.getId())) {
-                loadKey("antigua clave pública", "nueva clave pública asignada"); //todo parametrizar
+                loadKey("antigua clave pública", "nueva clave pública asignada","PUBLIC");
             }
             if (buttonId.equals(btLoadPrivateKey.getId())) {
-                loadKey("antigua clave privada ", "nueva clave privada asignada"); //todo parametrizar
+                loadKey("antigua clave privada ", "nueva clave privada asignada", "PRIVATE");
             }
             if (buttonId.equals(btExit.getId())) {
                 Platform.exit();
@@ -253,11 +253,21 @@ public class MainMenuController extends AppController implements EventHandler {
 
     }
 
-    private void loadKey(String oldKeyMsg, String newKeyMsg) {
-        File publicKeyFileChosen = C3kUtil.selectFile("Select Public key");
-        if (publicKeyFileChosen != null) {
+    private void loadKey(String oldKeyMsg, String newKeyMsg, String keyType) {
+
+
+
+        File keyFileChosen = C3kUtil.selectFile("Select  key");
+        if (keyFileChosen != null) {
             System.out.println(oldKeyMsg + getAppKeys().getPublicKeyFile().toPath()); //todo informar al usuario
-            getAppKeys().setPublicKeyFile(publicKeyFileChosen);
+
+            if(keyType.toUpperCase().equals("PUBLIC")){
+                getAppKeys().setPublicKeyFile(keyFileChosen);
+            }else if(keyType.toUpperCase().equals("PRIVATE")){
+                getAppKeys().setPrivateKeyFile(keyFileChosen);
+            }
+
+
             System.out.println(newKeyMsg + getAppKeys().getPublicKeyFile().toPath()); //todo informar al usuario
         }
     }

@@ -25,7 +25,8 @@ public class RSAService {
     public static final String PRIVATE_AUTO = "privateKey.key";
 
     /**
-     * Genera un par clave pública / clave privada y lo almacena en KEY_PATH
+     * Genera un par clave pública / clave privada y lo almacena en el directorio definido en KEY_PATH
+     * Asigna nombre a los ficheros según PUBLIC_AUTO y PRIVATE_AUTO
      */
     public static void generateKeys() {
         try {
@@ -56,55 +57,14 @@ public class RSAService {
         }
     }
 
-    /**
-     * Cifra un string usando las claves generadas por generateKeys() en el directorio
-     * KEY_PATH
-     * @param clearMsg
-     * @return
-     */
-    public static String cifra(String clearMsg) {
-        String cipheredMsg = null;
 
-        try {
-            // Recupera la clave pública del fichero
-            File filePublicKey = new File(KEY_PATH + PUBLIC_AUTO); // obtiene referencia al fichero de clave pública
-            byte[] fileContent = Files.readAllBytes(filePublicKey.toPath()); //lee el fichero de bytes y lo almacena en un array de bytes
 
-            X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(fileContent);
-            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            PublicKey publicKey = keyFactory.generatePublic(x509EncodedKeySpec);
-
-            // Obtiene el cifrador
-            Cipher cipher = Cipher.getInstance("RSA");
-            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-
-            // Cifra el mensaje de entrada
-            byte[] result = cipher.doFinal(clearMsg.getBytes());
-
-            // Convierte el resultado a base64 (mejora legibilidad)
-            cipheredMsg = Base64.getEncoder().encodeToString(result);
-            System.out.println(cipheredMsg);
-        } catch (IOException | BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | InvalidKeySpecException | NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-
-        return cipheredMsg;
-
-    }
-
-    /**
-     * Cifra un mensaje con la clave pública de la App
-     * @param clearMsg
-     * @param appPublicKey
-     * @return
-     */
     public static String cifra(String clearMsg, File appPublicKey) {
         String cipheredMsg = null;
 
         try {
             // Recupera la clave pública del fichero
-            File filePublicKey = new File(KEY_PATH + PUBLIC_AUTO); // obtiene referencia al fichero de clave pública
-            byte[] fileContent = Files.readAllBytes(filePublicKey.toPath()); //lee el fichero de bytes y lo almacena en un array de bytes
+            byte[] fileContent = Files.readAllBytes(appPublicKey.toPath()); //lee el fichero de bytes y lo almacena en un array de bytes
 
             X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(fileContent);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
@@ -128,20 +88,13 @@ public class RSAService {
 
     }
 
-    /**
-     * Descifra un string usando las claves generadas por generateKeys() en el directorio
-     * KEY_PATH
-     * @param cipheredMsg
-     * @return
-     */
-    public static String descifra(String cipheredMsg) {
+    public static String descifra(String cipheredMsg, File appPrivateKey) {
         String clearMsg = null;
 
 
         try {
             // Recupera la clave privada
-            File filePrivateKey = new File(KEY_PATH + PRIVATE_AUTO);
-            byte[] fileContent = Files.readAllBytes(filePrivateKey.toPath());
+            byte[] fileContent = Files.readAllBytes(appPrivateKey.toPath());
             PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(fileContent);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             PrivateKey privateKey = keyFactory.generatePrivate(pkcs8EncodedKeySpec);

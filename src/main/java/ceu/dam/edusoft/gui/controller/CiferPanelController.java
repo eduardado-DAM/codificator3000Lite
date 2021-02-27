@@ -48,13 +48,6 @@ public class CiferPanelController extends AppController implements EventHandler 
             }
 
         }
-        //si es empty no hace nada
-
-        //usa la clave pública para cifrar el mensaje
-
-        //cambia a la pantalla de descifrar
-
-        //carga el mensaje cifrado en el textarea de la pantalla de cifrado
 
     }
 

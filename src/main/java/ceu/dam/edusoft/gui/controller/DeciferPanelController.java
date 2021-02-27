@@ -13,6 +13,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
+import java.io.File;
+
 public class DeciferPanelController extends AppController implements EventHandler {
 
     @FXML
@@ -26,22 +28,6 @@ public class DeciferPanelController extends AppController implements EventHandle
 
     @FXML
     private TextArea taLienzo;
-
-
-    @FXML
-    void cifrar(ActionEvent event) {
-
-        if (!taLienzo.getText().isEmpty()) {
-
-        }
-
-        //usa la clave pública para cifrar el mensaje
-
-        //cambia a la pantalla de descifrar
-
-        //carga el mensaje cifrado en el textarea de la pantalla de cifrado
-
-    }
 
 
     @Override
@@ -104,17 +90,29 @@ public class DeciferPanelController extends AppController implements EventHandle
 
         EventType eventType = event.getEventType();
         // los eventos para hacer brillar los botones se repiten mucho
-        if(eventType.equals(MouseEvent.MOUSE_ENTERED) || eventType.equals(MouseEvent.MOUSE_EXITED) ){
+        if (eventType.equals(MouseEvent.MOUSE_ENTERED) || eventType.equals(MouseEvent.MOUSE_EXITED)) {
 
             C3kUtil.handleC3KMouseEvents(event);
-        }else if(event.getEventType().equals(ActionEvent.ACTION)){
+        } else if (event.getEventType().equals(ActionEvent.ACTION)) {
 
             Button button = (Button) event.getSource();
             String buttonId = button.getId();
 
-            if(buttonId.equals(btDescifrar.getId())){
-                String clearString = deciferMsg(taLienzo.getText()); //descifra el mensaje
-                taDescifrado.setText(clearString); //lo muestra al usuario
+            if (buttonId.equals(btDescifrar.getId())) {
+
+                if (!taLienzo.getText().isEmpty()) {
+                    String mensajeCifrado = taLienzo.getText();
+
+                    if (getAppKeys().getPrivateKeyFile() != null) {
+                        File privateFileKey = getAppKeys().getPrivateKeyFile();
+                        mensajeCifrado = RSAService.descifra(mensajeCifrado, privateFileKey);
+                        taDescifrado.setText(mensajeCifrado);
+
+                    } else {
+                        System.err.println("La app no tiene clave privada cargada");
+                    }
+
+                }
 
             }
 
@@ -124,11 +122,5 @@ public class DeciferPanelController extends AppController implements EventHandle
 
     }
 
-    private String deciferMsg(String codedMsg) {
-        return RSAService.descifra(codedMsg);
-    }
 
-    private void handleGraphicEvents(Event event) {
-
-    }
 }
