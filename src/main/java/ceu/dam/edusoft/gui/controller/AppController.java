@@ -7,7 +7,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +15,9 @@ import java.util.Map;
     Diseño del controlador:
     - Existe un único Stage para toda la App
     - Las Scene pueden cambiar
-        - Cada Scene tiene un BorderPane principal, el famoso borderPaneWindow. Es como la pantalla de una televisión, que irá mostrando distintos canales.
+        - Cada Scene tiene un BorderPane principal, el famoso borderPaneWindow. Es como la pantalla de una televisión,
+        que irá mostrando distintos canales.
+    -
  */
 public abstract class AppController {
 
@@ -24,6 +25,7 @@ public abstract class AppController {
     protected BorderPane borderPaneWindow; //El panel que irá cambiando
     private Map<String, Object> parameters; //Datos no persistentes de la App
     private AppController currentController; //El controlador de la Scene que está en uso
+
     private AppController currentPaneController; //El controlador del Panel que está en uso
 
 
@@ -35,6 +37,10 @@ public abstract class AppController {
 
     public void setBpWindow(BorderPane borderPane) {
         borderPaneWindow = borderPane;
+    }
+
+    public AppController getCurrentPaneController() {
+        return currentPaneController;
     }
 
     /**
@@ -52,6 +58,45 @@ public abstract class AppController {
 
     public static void setStage(Stage stage) {
         AppController.stage = stage;
+    }
+
+    /**
+     * Establece el controlador de la Scene en uso
+     *
+     * @param controller
+     */
+    protected void setCurrentController(AppController controller) {
+        currentController = controller;
+    }
+
+    public void setCurrentPaneController(AppController currentPaneController) {
+        this.currentPaneController = currentPaneController;
+    }
+
+    /**
+     * Cambia el espacio central del BorderPane con un Anchor pane que le pasemos por parámetro
+     *
+     * @param fxmlPanel
+     * @throws IOException
+     */
+    public void changePane(String fxmlPanel) throws IOException, InterruptedException {
+
+        //guarda el estado del panel
+        savePanelState();
+
+        //cargamos el siguiente panel
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPanel));
+        AnchorPane anchorPane = (AnchorPane) fxmlLoader.load();
+
+        //se obtiene el controlador del panel
+        AppController appController = fxmlLoader.getController();
+        appController.init(); // se arranca el controlador
+        setCurrentPaneController(appController);
+
+        //lo asignamos al famoso borderPaneWindow
+        borderPaneWindow.setCenter(anchorPane);
+
+
     }
 
     /**
@@ -76,38 +121,9 @@ public abstract class AppController {
 
     }
 
-    /**
-     * Establece el controlador de la Scene en uso
-     *
-     * @param controller
-     */
-    protected void setCurrentController(AppController controller) {
-        currentController = controller;
-    }
-
-    /**
-     * Cambia el espacio central del BorderPane con un Anchor pane que le pasemos por parámetro
-     *
-     * @param fxmlPanel
-     * @throws IOException
-     */
-    public void changePane(String fxmlPanel) throws IOException, InterruptedException {
-        //cargamos el panel
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPanel));
-        AnchorPane anchorPane = (AnchorPane) fxmlLoader.load();
-
-        AppController appController = fxmlLoader.getController();
-        appController.init();
-        setCurrentPaneController(appController);
-
-        //lo asignamos
-        borderPaneWindow.setCenter(anchorPane);
 
 
-    }
-
-
-
+    // Métodos abstractos
     /**
      * Carga inicial de datos y componentes de la escena
      */
@@ -116,16 +132,18 @@ public abstract class AppController {
     /**
      * Guarda los datos de entrada, selección de los usuarios
      */
-    protected abstract void saveState();
+    protected abstract void saveSceneState();
 
-    protected abstract void loadState();
+    protected abstract void savePanelState();
+
+    /**
+     *  Carga el último estado de la escena y/o del panel
+     */
+    protected abstract void loadSceneState();
+
+    protected  abstract void loadPanelState();
 
     public abstract BorderPane getBpWindow();
 
 
-
-
-    public void setCurrentPaneController(AppController currentPaneController) {
-        this.currentPaneController = currentPaneController;
-    }
 }

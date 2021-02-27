@@ -15,7 +15,6 @@ import javafx.scene.layout.BorderPane;
 
 public class CiferPanelController extends AppController implements EventHandler {
 
-
     @FXML
     private Button btCifrar;
 
@@ -28,10 +27,13 @@ public class CiferPanelController extends AppController implements EventHandler 
     @FXML
     private TextArea taLienzo;
 
+
+
+
     @FXML
     void cifrar(ActionEvent event) {
 
-        if(!taLienzo.getText().isEmpty()){
+        if (!taLienzo.getText().isEmpty()) {
             String mensajeClaro = taLienzo.getText();
             String mensajeCifrado = RSAService.cifra(mensajeClaro);
             taCifrado.setText(mensajeCifrado);
@@ -47,30 +49,51 @@ public class CiferPanelController extends AppController implements EventHandler 
     }
 
 
-
     @Override
     public void init() throws InterruptedException {
 
+        setCurrentPaneController(this); //establece el controlador de Panel en uso
+
+        addButtonEvents();
+
+        labelTransparent();
+
+
+    }
+
+    private void addButtonEvents() {
         btCifrar.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, this);
         btCifrar.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, this);
 
         btCifrar.addEventHandler(MouseEvent.MOUSE_PRESSED, this);
         btCifrar.addEventHandler(MouseEvent.MOUSE_RELEASED, this);
 
+    }
+
+    private void labelTransparent() {
         lbEnviar.setMouseTransparent(true);
 
+    }
+
+
+    @Override
+    protected void saveSceneState() {
+
+    }
+
+    @Override
+    protected void savePanelState() {
 
     }
 
 
     @Override
-    protected void saveState() {
+    protected void loadSceneState() {
 
     }
 
-
     @Override
-    protected void loadState() {
+    protected void loadPanelState() {
 
     }
 

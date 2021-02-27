@@ -12,25 +12,26 @@ import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
-public class DeciferPanelController extends  AppController implements EventHandler {
+public class DeciferPanelController extends AppController implements EventHandler {
 
     @FXML
-    private Button btEnviar;
+    private Button btDescifrar;
 
     @FXML
-    private Label lbEnviar;
+    private Label lbDescifrar;
 
     @FXML
-    private TextArea taCifrado;
+    private TextArea taDescifrado;
 
     @FXML
     private TextArea taLienzo;
 
 
-    @FXML
-    void enviar(ActionEvent event) {
 
-        if(!taLienzo.getText().isEmpty()){
+    @FXML
+    void cifrar(ActionEvent event) {
+
+        if (!taLienzo.getText().isEmpty()) {
 
         }
 
@@ -40,32 +41,51 @@ public class DeciferPanelController extends  AppController implements EventHandl
 
         //carga el mensaje cifrado en el textarea de la pantalla de cifrado
 
-
     }
+
 
     @Override
     public void init() throws InterruptedException {
 
-        btEnviar.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, this);
-        btEnviar.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, this);
+        setCurrentPaneController(this); // establece el controlador de panel en uso
+        addButtonEvents();
+        labelTransparent();
+    }
 
-        btEnviar.addEventHandler(MouseEvent.MOUSE_PRESSED, this);
-        btEnviar.addEventHandler(MouseEvent.MOUSE_RELEASED, this);
+    private void addButtonEvents() {
 
-        lbEnviar.setMouseTransparent(true);
+        btDescifrar.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, this);
+        btDescifrar.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, this);
 
+        btDescifrar.addEventHandler(MouseEvent.MOUSE_PRESSED, this);
+        btDescifrar.addEventHandler(MouseEvent.MOUSE_RELEASED, this);
+    }
+
+    private void labelTransparent() {
+
+        lbDescifrar.setMouseTransparent(true);
 
     }
 
 
     @Override
-    protected void saveState() {
+    protected void saveSceneState() {
+
+    }
+
+    @Override
+    protected void savePanelState() {
 
     }
 
 
     @Override
-    protected void loadState() {
+    protected void loadSceneState() {
+
+    }
+
+    @Override
+    protected void loadPanelState() {
 
     }
 

@@ -16,7 +16,6 @@ import java.io.IOException;
 
 public class MainMenuController extends AppController implements EventHandler {
 
-
     @FXML
     private BorderPane bpWindow;
 
@@ -24,16 +23,16 @@ public class MainMenuController extends AppController implements EventHandler {
     private ImageView ivDarkLogo;
 
     @FXML
-    private Button btLoadPrivateKey;
-
-    @FXML
-    private Button btLoadPublicKey;
+    private Button btCifer;
 
     @FXML
     private Button btDecifer;
 
     @FXML
-    private Button btCifer;
+    private Button btLoadPublicKey;
+
+    @FXML
+    private Button btLoadPrivateKey;
 
     @FXML
     private Label lbCifrar;
@@ -47,25 +46,16 @@ public class MainMenuController extends AppController implements EventHandler {
     @FXML
     private Label lbLoadPriKey;
 
+
     @FXML
     void cifrar(ActionEvent event) throws IOException, InterruptedException {
-        changePane(FXMLPATH.Panel.CIFRAR_PANEL);
+        changePane(FXMLPATH.Panel.CIFER_PANEL);
 
     }
 
     @FXML
     void descifrar(ActionEvent event) throws IOException, InterruptedException {
         changePane(FXMLPATH.Panel.DECIFER_PANEL);
-    }
-
-    @FXML
-    void loadPrivateKey(ActionEvent event) {
-
-    }
-
-    @FXML
-    void loadPublicKey(ActionEvent event) {
-
     }
 
 
@@ -98,6 +88,21 @@ public class MainMenuController extends AppController implements EventHandler {
      * Añade eventos de entrada y salida de ratón en botones
      */
     private void addButtonEvents() {
+
+        addGraphicEvents();
+        addNavigationEvents();
+
+
+    }
+
+    private void addNavigationEvents() {
+        btCifer.addEventHandler(ActionEvent.ACTION, this);
+        btDecifer.addEventHandler(ActionEvent.ACTION, this);
+        btLoadPublicKey.addEventHandler(ActionEvent.ACTION, this);
+        btLoadPrivateKey.addEventHandler(ActionEvent.ACTION, this);
+    }
+
+    private void addGraphicEvents() {
         btCifer.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, this);
         btCifer.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, this);
         btCifer.addEventHandler(MouseEvent.MOUSE_PRESSED, this);
@@ -117,14 +122,6 @@ public class MainMenuController extends AppController implements EventHandler {
         btLoadPrivateKey.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, this);
         btLoadPrivateKey.addEventHandler(MouseEvent.MOUSE_PRESSED, this);
         btLoadPrivateKey.addEventHandler(MouseEvent.MOUSE_RELEASED, this);
-
-
-
-
-
-
-
-
     }
 
     /**
@@ -138,12 +135,22 @@ public class MainMenuController extends AppController implements EventHandler {
 
 
     @Override
-    protected void saveState() {
+    protected void saveSceneState() {
 
     }
 
     @Override
-    protected void loadState() {
+    protected void savePanelState() {
+
+    }
+
+    @Override
+    protected void loadSceneState() {
+
+    }
+
+    @Override
+    protected void loadPanelState() {
 
     }
 
@@ -163,8 +170,10 @@ public class MainMenuController extends AppController implements EventHandler {
     @Override
     public void handle(Event event) {
 
+        //Eventos gráficos
         Glow glow = new Glow();
         glow.setLevel(10);
+
         if (event.getEventType().equals(MouseEvent.MOUSE_ENTERED)) {
             ((Button) event.getSource()).setEffect(glow);
         }
@@ -178,6 +187,33 @@ public class MainMenuController extends AppController implements EventHandler {
         }
         if (event.getEventType().equals(MouseEvent.MOUSE_RELEASED)) {
             ((Button) event.getSource()).setEffect(null);
+        }
+
+        //Eventos de navegación
+
+        if (event.getEventType().equals(ActionEvent.ACTION)) {
+
+            Button button = (Button) event.getSource();
+            String buttonId = button.getId();
+
+            try {
+                if (buttonId.equals(btCifer.getId())) {
+                    changePane(FXMLPATH.Panel.CIFER_PANEL);
+                }
+                if (buttonId.equals(btDecifer.getId())) {
+                    changePane(FXMLPATH.Panel.DECIFER_PANEL);
+                }
+            } catch (IOException | InterruptedException e) {
+                C3kUtil.informUser(C3kUtil.ErrorString.ES_PANEL_CHANGE_ERROR);
+            }
+            if (buttonId.equals(btLoadPublicKey.getId())) {
+                //todo implementar filechooser
+            }
+            if (buttonId.equals(btLoadPrivateKey.getId())) {
+                //todo implementar filechooser
+            }
+
+
         }
 
 

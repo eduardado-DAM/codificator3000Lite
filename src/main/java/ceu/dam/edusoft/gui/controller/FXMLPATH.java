@@ -8,7 +8,7 @@ public class FXMLPATH {
     }
 
     public class Panel{
-        public static final String CIFRAR_PANEL = "/ceu/dam/edusoft/ciferPanel.fxml";
+        public static final String CIFER_PANEL = "/ceu/dam/edusoft/ciferPanel.fxml";
         public static final String DECIFER_PANEL = "/ceu/dam/edusoft/deciferPanel.fxml";
     }
 }
