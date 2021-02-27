@@ -13,6 +13,8 @@ import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
+import java.io.File;
+
 public class CiferPanelController extends AppController implements EventHandler {
 
     @FXML
@@ -31,12 +33,20 @@ public class CiferPanelController extends AppController implements EventHandler 
 
 
     @FXML
-    void cifrar(ActionEvent event) {
+    void cifrar(ActionEvent event) { // todo cambiar a EventHandler design
 
         if (!taLienzo.getText().isEmpty()) {
             String mensajeClaro = taLienzo.getText();
-            String mensajeCifrado = RSAService.cifra(mensajeClaro);
-            taCifrado.setText(mensajeCifrado);
+
+            if(getAppKeys().getPublicKeyFile() != null){
+                File publicKeyfile = getAppKeys().getPublicKeyFile();
+                String mensajeCifrado = RSAService.cifra(mensajeClaro,publicKeyfile);
+                taCifrado.setText(mensajeCifrado);
+
+            }else{
+                System.err.println("La app no tiene clave pública cargada");
+            }
+
         }
         //si es empty no hace nada
 

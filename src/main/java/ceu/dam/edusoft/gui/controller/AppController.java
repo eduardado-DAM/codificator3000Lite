@@ -23,17 +23,13 @@ import java.util.Map;
 public abstract class AppController {
 
     private static Stage stage; //El único escenario de la App
+    private static AppKeys appKeys; // Las claves Pública y Privada de la aplicación
     protected BorderPane borderPaneWindow; //El panel que irá cambiando
     private Map<String, Object> parameters; //Datos no persistentes de la App
     private AppController currentController; //El controlador de la Scene que está en uso
 
     private AppController currentPaneController; //El controlador del Panel que está en uso
 
-    public AppKeys getAppKeys() {
-        return appKeys;
-    }
-
-    private AppKeys appKeys; // Las claves Pública y Privada de la aplicación
 
 
     public AppController() {
@@ -50,6 +46,10 @@ public abstract class AppController {
 
     protected void setAppKeys(AppKeys appKeys){
         this.appKeys = (appKeys);
+    }
+
+    public AppKeys getAppKeys() {
+        return appKeys;
     }
 
     /**

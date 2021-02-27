@@ -4,7 +4,6 @@ import ceu.dam.edusoft.gui.util.AppKeys;
 import ceu.dam.edusoft.gui.util.C3kUtil;
 import ceu.dam.edusoft.gui.util.FXMLPATH;
 import ceu.dam.edusoft.gui.util.FadeTask;
-import ceu.dam.edusoft.service.RSAService;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -223,26 +222,25 @@ public class MainMenuController extends AppController implements EventHandler {
                 C3kUtil.informUser(C3kUtil.ErrorString.ES_PANEL_CHANGE_ERROR);
             }
             if (buttonId.equals(btLoadPublicKey.getId())) {
-                File publicKeyFileChosen = C3kUtil.selectFile("Select Public key");
-                if (publicKeyFileChosen != null){
-                    System.out.println("antigua clave pública" + getAppKeys().getPublicKeyFile().toPath());
-                    getAppKeys().setPublicKeyFile(publicKeyFileChosen);
-                    System.out.println("nueva clave pública asignada" + getAppKeys().getPublicKeyFile().toPath()); //todo informar al usuario
-                }
+                loadKey("antigua clave pública", "nueva clave pública asignada"); //todo parametrizar
             }
             if (buttonId.equals(btLoadPrivateKey.getId())) {
-                File privateKeyFilechosen = C3kUtil.selectFile("Select Public key");
-                if (privateKeyFilechosen != null){
-                    System.out.println("antigua clave privada " + getAppKeys().getPublicKeyFile().toPath());
-                    getAppKeys().setPublicKeyFile(privateKeyFilechosen);
-                    System.out.println("nueva clave privada asignada" + getAppKeys().getPublicKeyFile().toPath()); //todo informar al usuario
-                }
+                loadKey("antigua clave privada ", "nueva clave privada asignada"); //todo parametrizar
             }
 
 
         }
 
 
+    }
+
+    private void loadKey(String oldKeyMsg, String newKeyMsg) {
+        File publicKeyFileChosen = C3kUtil.selectFile("Select Public key");
+        if (publicKeyFileChosen != null) {
+            System.out.println(oldKeyMsg + getAppKeys().getPublicKeyFile().toPath()); //todo informar al usuario
+            getAppKeys().setPublicKeyFile(publicKeyFileChosen);
+            System.out.println(newKeyMsg + getAppKeys().getPublicKeyFile().toPath()); //todo informar al usuario
+        }
     }
 
 }
