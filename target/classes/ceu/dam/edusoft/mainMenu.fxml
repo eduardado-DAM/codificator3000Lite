@@ -47,7 +47,7 @@
                   <DropShadow />
                </effect>
             </Button>
-            <Button fx:id="btLoadPublicKey" layoutY="307.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="300.0" style="-fx-background-color: #1db953;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Button fx:id="btLoadPublicKey" layoutY="283.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="300.0" style="-fx-background-color: #1db953;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -55,7 +55,7 @@
                   <DropShadow />
                </effect>
             </Button>
-            <Button fx:id="btLoadPrivateKey" layoutY="383.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="300.0" style="-fx-background-color: #1db953;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Button fx:id="btLoadPrivateKey" layoutY="359.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="300.0" style="-fx-background-color: #1db953;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -73,12 +73,12 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="lbLoadPubK" layoutX="155.0" layoutY="321.0" text="Cargar Clave Pública">
+            <Label fx:id="lbLoadPubK" layoutX="155.0" layoutY="297.0" text="Cargar Clave Pública">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="lbLoadPriKey" layoutX="154.0" layoutY="397.0" text="Cargar Clave Privada">
+            <Label fx:id="lbLoadPriKey" layoutX="154.0" layoutY="373.0" text="Cargar Clave Privada">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -86,7 +86,22 @@
             <AnchorPane layoutX="7.0" layoutY="5.0" prefHeight="500.0" prefWidth="60.0" style="-fx-background-color: #1a1d30;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                <effect>
                   <DropShadow />
-               </effect></AnchorPane>
+               </effect>
+               <children>
+                  <Button fx:id="btExit" layoutX="10.0" layoutY="13.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="50.0" style="-fx-background-color: #800c04;" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Button>
+                  <Label fx:id="lbExit" layoutX="16.0" layoutY="19.0" text="Salir" textFill="#ebe0e0">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+               </children></AnchorPane>
          </children>
          <effect>
             <DropShadow />

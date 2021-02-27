@@ -4,6 +4,7 @@ import ceu.dam.edusoft.gui.util.AppKeys;
 import ceu.dam.edusoft.gui.util.C3kUtil;
 import ceu.dam.edusoft.gui.util.FXMLPATH;
 import ceu.dam.edusoft.gui.util.FadeTask;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -51,6 +52,12 @@ public class MainMenuController extends AppController implements EventHandler {
     @FXML
     private Label lbLoadPriKey;
 
+    @FXML
+    private Button btExit;
+
+    @FXML
+    private Label lbExit;
+
 
     @FXML
     void cifrar(ActionEvent event) throws IOException, InterruptedException {
@@ -97,6 +104,7 @@ public class MainMenuController extends AppController implements EventHandler {
         lbDescifrar.setMouseTransparent(true);
         lbLoadPriKey.setMouseTransparent(true);
         lbLoadPubK.setMouseTransparent(true);
+        lbExit.setMouseTransparent(true);
     }
 
     /**
@@ -115,6 +123,7 @@ public class MainMenuController extends AppController implements EventHandler {
         btDecifer.addEventHandler(ActionEvent.ACTION, this);
         btLoadPublicKey.addEventHandler(ActionEvent.ACTION, this);
         btLoadPrivateKey.addEventHandler(ActionEvent.ACTION, this);
+        btExit.addEventHandler(ActionEvent.ACTION, this);
     }
 
     private void addGraphicEvents() {
@@ -137,6 +146,13 @@ public class MainMenuController extends AppController implements EventHandler {
         btLoadPrivateKey.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, this);
         btLoadPrivateKey.addEventHandler(MouseEvent.MOUSE_PRESSED, this);
         btLoadPrivateKey.addEventHandler(MouseEvent.MOUSE_RELEASED, this);
+
+        btExit.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, this);
+        btExit.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, this);
+        btExit.addEventHandler(MouseEvent.MOUSE_PRESSED, this);
+        btExit.addEventHandler(MouseEvent.MOUSE_RELEASED, this);
+
+
     }
 
     /**
@@ -226,6 +242,9 @@ public class MainMenuController extends AppController implements EventHandler {
             }
             if (buttonId.equals(btLoadPrivateKey.getId())) {
                 loadKey("antigua clave privada ", "nueva clave privada asignada"); //todo parametrizar
+            }
+            if (buttonId.equals(btExit.getId())) {
+                Platform.exit();
             }
 
 
