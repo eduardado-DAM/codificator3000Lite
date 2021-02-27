@@ -2,7 +2,6 @@ package ceu.dam.edusoft.gui.launcher;
 
 import ceu.dam.edusoft.gui.controller.AppController;
 import ceu.dam.edusoft.gui.util.FXMLPATH;
-import ceu.dam.edusoft.service.RSAService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -32,7 +31,6 @@ public class App extends Application {
         AppController mainMenuController = fxmlLoader.getController(); //obtengo el controlador del menú principal
         mainMenuController.setBpWindow(mainMenuController.getBpWindow()); //asigna, en el controlador padre, quíen es el famoso BorderPaneWindow
         mainMenuController.init(); //arranca los funciones iniciales del controlador de la escena
-
 
 
     }

@@ -14,7 +14,6 @@ import java.io.File;
 public class C3kUtil {
 
     public static void informUser(String msg){
-        //todo implemetnar una alerta o algo así fino
 
         System.out.println(">>Error" + msg);
     }

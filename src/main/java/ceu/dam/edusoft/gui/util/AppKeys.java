@@ -17,7 +17,7 @@ public class AppKeys {
         publicKeyFile = new File(RSAService.KEY_PATH + RSAService.PUBLIC_AUTO);
         privateKeyFile = new File(RSAService.KEY_PATH + RSAService.PRIVATE_AUTO);
 
-        System.out.println(privateKeyFile.toString()); // todo cambiar por información para el usuario
+        System.out.println(privateKeyFile.toString());
         System.out.println(publicKeyFile.toString());
     }
 

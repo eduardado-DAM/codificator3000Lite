@@ -59,17 +59,6 @@ public class MainMenuController extends AppController implements EventHandler {
     private Label lbExit;
 
 
-    @FXML
-    void cifrar(ActionEvent event) throws IOException, InterruptedException {
-        changePane(FXMLPATH.Panel.CIFER_PANEL);
-
-    }
-
-    @FXML
-    void descifrar(ActionEvent event) throws IOException, InterruptedException {
-        changePane(FXMLPATH.Panel.DECIFER_PANEL);
-    }
-
 
     @Override
     public void init() {
@@ -114,8 +103,6 @@ public class MainMenuController extends AppController implements EventHandler {
 
         addGraphicEvents();
         addNavigationEvents();
-
-
     }
 
     private void addNavigationEvents() {
@@ -202,8 +189,10 @@ public class MainMenuController extends AppController implements EventHandler {
     public void handle(Event event) {
 
         //Eventos gráficos
+
         Glow glow = new Glow();
         glow.setLevel(10);
+
 
         if (event.getEventType().equals(MouseEvent.MOUSE_ENTERED)) {
             ((Button) event.getSource()).setEffect(glow);
@@ -238,7 +227,7 @@ public class MainMenuController extends AppController implements EventHandler {
                 C3kUtil.informUser(C3kUtil.ErrorString.ES_PANEL_CHANGE_ERROR);
             }
             if (buttonId.equals(btLoadPublicKey.getId())) {
-                loadKey("antigua clave pública", "nueva clave pública asignada","PUBLIC");
+                loadKey("antigua clave pública", "nueva clave pública asignada", "PUBLIC");
             }
             if (buttonId.equals(btLoadPrivateKey.getId())) {
                 loadKey("antigua clave privada ", "nueva clave privada asignada", "PRIVATE");
@@ -256,19 +245,18 @@ public class MainMenuController extends AppController implements EventHandler {
     private void loadKey(String oldKeyMsg, String newKeyMsg, String keyType) {
 
 
-
         File keyFileChosen = C3kUtil.selectFile("Select  key");
         if (keyFileChosen != null) {
-            System.out.println(oldKeyMsg + getAppKeys().getPublicKeyFile().toPath()); //todo informar al usuario
+            System.out.println(oldKeyMsg + getAppKeys().getPublicKeyFile().toPath());
 
-            if(keyType.toUpperCase().equals("PUBLIC")){
+            if (keyType.toUpperCase().equals("PUBLIC")) {
                 getAppKeys().setPublicKeyFile(keyFileChosen);
-            }else if(keyType.toUpperCase().equals("PRIVATE")){
+            } else if (keyType.toUpperCase().equals("PRIVATE")) {
                 getAppKeys().setPrivateKeyFile(keyFileChosen);
             }
 
 
-            System.out.println(newKeyMsg + getAppKeys().getPublicKeyFile().toPath()); //todo informar al usuario
+            System.out.println(newKeyMsg + getAppKeys().getPublicKeyFile().toPath());
         }
     }
 

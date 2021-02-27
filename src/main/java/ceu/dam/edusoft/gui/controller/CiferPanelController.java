@@ -1,5 +1,6 @@
 package ceu.dam.edusoft.gui.controller;
 
+import ceu.dam.edusoft.gui.util.C3kUtil;
 import ceu.dam.edusoft.service.RSAService;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -8,8 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
@@ -31,9 +30,8 @@ public class CiferPanelController extends AppController implements EventHandler 
 
 
 
-
     @FXML
-    void cifrar(ActionEvent event) { // todo cambiar a EventHandler design
+    void cifrar(ActionEvent event) {
 
         if (!taLienzo.getText().isEmpty()) {
             String mensajeClaro = taLienzo.getText();
@@ -53,7 +51,7 @@ public class CiferPanelController extends AppController implements EventHandler 
 
 
     @Override
-    public void init() throws InterruptedException {
+    public void init()  {
 
         setCurrentPaneController(this); //establece el controlador de Panel en uso
 
@@ -109,22 +107,8 @@ public class CiferPanelController extends AppController implements EventHandler 
     @Override
     public void handle(Event event) {
 
-        Glow glow = new Glow();
-        glow.setLevel(10);
-        if (event.getEventType().equals(MouseEvent.MOUSE_ENTERED)) {
-            ((Button) event.getSource()).setEffect(glow);
-        }
-        if (event.getEventType().equals(MouseEvent.MOUSE_EXITED)) {
-            ((Button) event.getSource()).setEffect(null);
-        }
-        if (event.getEventType().equals(MouseEvent.MOUSE_PRESSED)) {
-            ColorAdjust colorAdjust = new ColorAdjust();
-            colorAdjust.setBrightness(5);
-            ((Button) event.getSource()).setEffect(colorAdjust);
-        }
-        if (event.getEventType().equals(MouseEvent.MOUSE_RELEASED)) {
-            ((Button) event.getSource()).setEffect(null);
-        }
+        C3kUtil.handleC3KMouseEvents(event);
+
 
     }
 }
