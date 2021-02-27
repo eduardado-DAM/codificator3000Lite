@@ -54,8 +54,8 @@ public class MainMenuController extends AppController implements EventHandler {
     }
 
     @FXML
-    void descifrar(ActionEvent event) {
-
+    void descifrar(ActionEvent event) throws IOException, InterruptedException {
+        changePane(FXMLPATH.Panel.DECIFER_PANEL);
     }
 
     @FXML

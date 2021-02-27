@@ -1,6 +1,5 @@
 package ceu.dam.edusoft.gui.controller;
 
-import ceu.dam.edusoft.service.RSAService;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -13,11 +12,10 @@ import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
-public class CiferPanelController extends AppController implements EventHandler {
-
+public class DeciferPanelController extends  AppController implements EventHandler {
 
     @FXML
-    private Button btCifrar;
+    private Button btEnviar;
 
     @FXML
     private Label lbEnviar;
@@ -28,15 +26,13 @@ public class CiferPanelController extends AppController implements EventHandler 
     @FXML
     private TextArea taLienzo;
 
+
     @FXML
-    void cifrar(ActionEvent event) {
+    void enviar(ActionEvent event) {
 
         if(!taLienzo.getText().isEmpty()){
-            String mensajeClaro = taLienzo.getText();
-            String mensajeCifrado = RSAService.cifra(mensajeClaro);
-            taCifrado.setText(mensajeCifrado);
+
         }
-        //si es empty no hace nada
 
         //usa la clave pública para cifrar el mensaje
 
@@ -44,18 +40,17 @@ public class CiferPanelController extends AppController implements EventHandler 
 
         //carga el mensaje cifrado en el textarea de la pantalla de cifrado
 
+
     }
-
-
 
     @Override
     public void init() throws InterruptedException {
 
-        btCifrar.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, this);
-        btCifrar.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, this);
+        btEnviar.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, this);
+        btEnviar.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, this);
 
-        btCifrar.addEventHandler(MouseEvent.MOUSE_PRESSED, this);
-        btCifrar.addEventHandler(MouseEvent.MOUSE_RELEASED, this);
+        btEnviar.addEventHandler(MouseEvent.MOUSE_PRESSED, this);
+        btEnviar.addEventHandler(MouseEvent.MOUSE_RELEASED, this);
 
         lbEnviar.setMouseTransparent(true);
 

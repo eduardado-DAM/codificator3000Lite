@@ -4,7 +4,6 @@ public class FXMLPATH {
 
 
     public class Scene{
-        public static final String MAIN_SCENE = "/ceu/dam/edusoft/mainScene.fxml";
         public static final String MAIN_MENU = "/ceu/dam/edusoft/mainMenu.fxml";
     }
 
