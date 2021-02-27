@@ -1,4 +1,4 @@
-package ceu.dam.edusoft.controller;
+package ceu.dam.edusoft.gui.controller;
 
 import javafx.animation.FadeTransition;
 import javafx.concurrent.Task;
@@ -20,7 +20,6 @@ public class FadeTask extends Task<Void> {
 
     @Override
     protected void succeeded() {
-        mainMenuController.setIvDarkLogo(null); //se deshace del imgview todo esto es necesario?
 
     }
 
@@ -30,7 +29,7 @@ public class FadeTask extends Task<Void> {
 
     public void fade(ImageView imageView) {
         FadeTransition fadeTransition = new FadeTransition();
-        fadeTransition.setDuration(Duration.millis(5000));
+        fadeTransition.setDuration(Duration.millis(4000));
         fadeTransition.setNode(imageView);
         fadeTransition.setFromValue(1);
         fadeTransition.setToValue(0);

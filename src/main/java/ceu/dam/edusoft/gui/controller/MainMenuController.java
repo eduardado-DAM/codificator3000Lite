@@ -1,4 +1,4 @@
-package ceu.dam.edusoft.controller;
+package ceu.dam.edusoft.gui.controller;
 
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -6,8 +6,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -17,32 +16,12 @@ import java.io.IOException;
 
 public class MainMenuController extends AppController implements EventHandler {
 
-    @FXML
-    private TextArea taInfo;
 
     @FXML
-    private TextField tfPort;
-
-
-    @FXML
-    private Label lbPort;
-
+    private BorderPane bpWindow;
 
     @FXML
-    private Button connectionLed;
-
-
-    @FXML
-    private Label lbCifrar;
-
-    @FXML
-    private Label lbDescifrar;
-
-    @FXML
-    private Label lbLoadPubK;
-
-    @FXML
-    private Label lbLoadPriKey;
+    private ImageView ivDarkLogo;
 
     @FXML
     private Button btLoadPrivateKey;
@@ -57,44 +36,43 @@ public class MainMenuController extends AppController implements EventHandler {
     private Button btCifer;
 
     @FXML
-    private Button btStartServer;
+    private Label lbCifrar;
 
     @FXML
-    private ImageView ivDarkLogo;
-
-
-    @FXML
-    private BorderPane bpWindow;
-
-
+    private Label lbDescifrar;
 
     @FXML
-    void changeWindow(ActionEvent event) throws IOException {
+    private Label lbLoadPubK;
+
+    @FXML
+    private Label lbLoadPriKey;
+
+    @FXML
+    void cifrar(ActionEvent event) throws IOException, InterruptedException {
         changePane(FXMLPATH.Panel.CIFRAR_PANEL);
+
     }
-
-
 
     @FXML
-    void startServer(ActionEvent event) {
-        // si el usuario pulsa el botón se obtiene el nº de puerto
-        Integer port = Integer.parseInt(tfPort.getText());
-        // se lanza el servidor desde el controlador padre pasando el puerto como parámetro
-        startServer(port);
+    void descifrar(ActionEvent event) {
 
     }
+
+    @FXML
+    void loadPrivateKey(ActionEvent event) {
+
+    }
+
+    @FXML
+    void loadPublicKey(ActionEvent event) {
+
+    }
+
 
     @Override
     public void init() {
 
         setCurrentController(this); //se establece como controlador en uso en el controlador padre
-
-        taInfo.setVisible(false);
-        taInfo.setFocusTraversable(false);
-
-        connectionLed.setStyle(OnOffStyle.OFF);
-
-        setDefaultIP();
 
         fadeLogo();
 
@@ -103,25 +81,6 @@ public class MainMenuController extends AppController implements EventHandler {
         labelTransparent();
 
 
-
-    }
-
-
-
-    public Button getConnectionLed() {
-        return connectionLed;
-    }
-
-    public TextField getTfPort() {
-        return tfPort;
-    }
-
-    private void setDefaultIP() {
-        tfPort.setText("8888");
-    }
-
-    public Button getBtStartServer() {
-        return btStartServer;
     }
 
 
@@ -133,7 +92,6 @@ public class MainMenuController extends AppController implements EventHandler {
         lbDescifrar.setMouseTransparent(true);
         lbLoadPriKey.setMouseTransparent(true);
         lbLoadPubK.setMouseTransparent(true);
-        lbPort.setMouseTransparent(true);
     }
 
     /**
@@ -142,18 +100,29 @@ public class MainMenuController extends AppController implements EventHandler {
     private void addButtonEvents() {
         btCifer.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, this);
         btCifer.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, this);
+        btCifer.addEventHandler(MouseEvent.MOUSE_PRESSED, this);
+        btCifer.addEventHandler(MouseEvent.MOUSE_RELEASED, this);
 
         btDecifer.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, this);
         btDecifer.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, this);
+        btDecifer.addEventHandler(MouseEvent.MOUSE_PRESSED, this);
+        btDecifer.addEventHandler(MouseEvent.MOUSE_RELEASED, this);
 
         btLoadPublicKey.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, this);
         btLoadPublicKey.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, this);
+        btLoadPublicKey.addEventHandler(MouseEvent.MOUSE_PRESSED, this);
+        btLoadPublicKey.addEventHandler(MouseEvent.MOUSE_RELEASED, this);
 
         btLoadPrivateKey.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, this);
         btLoadPrivateKey.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, this);
+        btLoadPrivateKey.addEventHandler(MouseEvent.MOUSE_PRESSED, this);
+        btLoadPrivateKey.addEventHandler(MouseEvent.MOUSE_RELEASED, this);
 
-        btStartServer.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, this);
-        btStartServer.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, this);
+
+
+
+
+
 
 
     }
@@ -190,10 +159,6 @@ public class MainMenuController extends AppController implements EventHandler {
         this.ivDarkLogo = ivDarkLogo;
     }
 
-    public TextArea getTaInfo() {
-        return taInfo;
-    }
-
 
     @Override
     public void handle(Event event) {
@@ -204,6 +169,14 @@ public class MainMenuController extends AppController implements EventHandler {
             ((Button) event.getSource()).setEffect(glow);
         }
         if (event.getEventType().equals(MouseEvent.MOUSE_EXITED)) {
+            ((Button) event.getSource()).setEffect(null);
+        }
+        if (event.getEventType().equals(MouseEvent.MOUSE_PRESSED)) {
+            ColorAdjust colorAdjust = new ColorAdjust();
+            colorAdjust.setBrightness(5);
+            ((Button) event.getSource()).setEffect(colorAdjust);
+        }
+        if (event.getEventType().equals(MouseEvent.MOUSE_RELEASED)) {
             ((Button) event.getSource()).setEffect(null);
         }
 

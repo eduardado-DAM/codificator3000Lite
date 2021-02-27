@@ -1,6 +1,5 @@
-package ceu.dam.edusoft.controller;
+package ceu.dam.edusoft.gui.controller;
 
-import ceu.dam.edusoft.server.Server;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -8,6 +7,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +24,9 @@ public abstract class AppController {
     protected BorderPane borderPaneWindow; //El panel que irá cambiando
     private Map<String, Object> parameters; //Datos no persistentes de la App
     private AppController currentController; //El controlador de la Scene que está en uso
+    private AppController currentPaneController; //El controlador del Panel que está en uso
+
+
 
 
     public AppController() {
@@ -65,23 +68,9 @@ public abstract class AppController {
         getStage().setScene(scene);
 
         //Controller
-        /*
-            Este trozo de código se ejecuta cada vez que cambiamos de Scene, en cada Scene puede haber un menú diferente.
-         */
         AppController appController = fxmlLoader.getController(); //obtenemos el controller de la escena que hayamos cargado
         appController.init(); //invocamos el método, que contiene aquellas acciones que queremos que ocurran siempre cuando se carga una escena
-        /*
-            Qué hace esta línea:
-                - Cada clase controladora hereda de AppController
-                - AppController establece que ella y todas sus clases hijas tendrán un hashmap
-                - Cuando ejecutamos controller.setParameters(parameters)
-                    - Le estamos pasando la referencia del hashMap de la clase padre a la clase hija
-                    - De esta manera siempre habrá accesible un hashmap que se va pasando entre controladores
-         */
         appController.setParameters(parameters);
-        /*
-            Asigna quién será
-         */
         appController.setBpWindow(appController.getBpWindow());
 
 
@@ -102,16 +91,21 @@ public abstract class AppController {
      * @param fxmlPanel
      * @throws IOException
      */
-    public void changePane(String fxmlPanel) throws IOException {
+    public void changePane(String fxmlPanel) throws IOException, InterruptedException {
         //cargamos el panel
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPanel));
         AnchorPane anchorPane = (AnchorPane) fxmlLoader.load();
 
+        AppController appController = fxmlLoader.getController();
+        appController.init();
+        setCurrentPaneController(appController);
+
         //lo asignamos
-        borderPaneWindow.setCenter(anchorPane); //
+        borderPaneWindow.setCenter(anchorPane);
 
 
     }
+
 
 
     /**
@@ -128,28 +122,10 @@ public abstract class AppController {
 
     public abstract BorderPane getBpWindow();
 
-    /**
-     * Arranca el servidor
-     *
-     * @param port puerto para escuchar peticiones
-     */
-    public void startServer(Integer port) {
 
-        //instanciación del servidor
-        Server server = new Server();
-        server.init(port, currentController);//se arranca
 
-        // si ha ido bien se enciende el led y se informa al usuario
-        /*MainMenuController mainMenuController = (MainMenuController) currentController;*/
 
-        /*mainMenuController.getConnectionLed().setStyle(OnOffStyle.ON);
-        mainMenuController.getTaInfo().setText("Esperando Peticiones");*/
-
+    public void setCurrentPaneController(AppController currentPaneController) {
+        this.currentPaneController = currentPaneController;
     }
-
-
-
-
-
-
 }

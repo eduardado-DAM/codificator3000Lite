@@ -1,4 +1,4 @@
-package ceu.dam.edusoft.controller;
+package ceu.dam.edusoft.gui.controller;
 
 public class FXMLPATH {
 

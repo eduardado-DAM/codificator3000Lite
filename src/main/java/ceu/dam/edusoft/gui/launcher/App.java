@@ -1,12 +1,15 @@
-package ceu.dam.edusoft;
+package ceu.dam.edusoft.gui.launcher;
 
-import ceu.dam.edusoft.controller.AppController;
-import ceu.dam.edusoft.controller.FXMLPATH;
+import ceu.dam.edusoft.gui.controller.AppController;
+import ceu.dam.edusoft.gui.controller.FXMLPATH;
+import ceu.dam.edusoft.service.RSAService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
@@ -20,10 +23,11 @@ public class App extends Application {
         Parent parent = fxmlLoader.load();
         Scene scene = new Scene(parent, 800, 500);
 
-        //scene.addEventFilter(MouseEvent.ANY, e -> System.out.println( e)); //todo para saber qué evento de ratón capturar luego
+
 
         stage.setScene(scene);
         stage.setResizable(false);
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
 
         // CONTROLLER DEVICE
@@ -34,6 +38,9 @@ public class App extends Application {
         AppController mainMenuController = fxmlLoader.getController(); //obtengo el controlador del menú principal
         mainMenuController.setBpWindow(mainMenuController.getBpWindow()); //asigna, en el controlador padre, quíen es el famoso BorderPaneWindow
         mainMenuController.init(); //arranca los funciones iniciales del controlador de la escena
+
+        //carga de clave pública y privada
+        RSAService.generateKeyPair();
 
     }
 

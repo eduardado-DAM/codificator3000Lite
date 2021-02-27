@@ -1,4 +1,4 @@
-package ceu.dam.edusoft;
+package ceu.dam.edusoft.gui.launcher;
 
 public class Launcher {
     public static void main(String[] args) {

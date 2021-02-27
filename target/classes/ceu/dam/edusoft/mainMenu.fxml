@@ -2,17 +2,14 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ceu.dam.edusoft.controller.MainMenuController">
+<AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ceu.dam.edusoft.gui.controller.MainMenuController">
    <children>
       <BorderPane fx:id="bpWindow" layoutX="300.0" prefHeight="500.0" prefWidth="500.0">
          <center>
@@ -28,18 +25,13 @@
                         <Image url="@img/c3kNight.png" />
                      </image>
                   </ImageView>
-                  <TextArea fx:id="taInfo" layoutY="449.0" prefHeight="30.0" prefWidth="500.0" style="-fx-background-color: #000000;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                     <effect>
-                        <DropShadow />
-                     </effect>
-                  </TextArea>
                </children>
             </AnchorPane>
          </center>
       </BorderPane>
       <AnchorPane prefHeight="500.0" prefWidth="300.0" style="-fx-background-color: #11253a;" AnchorPane.leftAnchor="0.0">
          <children>
-            <Button fx:id="btLoadPrivateKey" layoutY="414.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="300.0" style="-fx-background-color: #1db953;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Button fx:id="btLoadPrivateKey" layoutY="383.0" mnemonicParsing="false" onAction="#loadPrivateKey" prefHeight="48.0" prefWidth="300.0" style="-fx-background-color: #1db953;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -47,7 +39,7 @@
                   <DropShadow />
                </effect>
             </Button>
-            <Button fx:id="btLoadPublicKey" layoutY="338.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="300.0" style="-fx-background-color: #1db953;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Button fx:id="btLoadPublicKey" layoutY="307.0" mnemonicParsing="false" onAction="#loadPublicKey" prefHeight="48.0" prefWidth="300.0" style="-fx-background-color: #1db953;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -55,7 +47,7 @@
                   <DropShadow />
                </effect>
             </Button>
-            <Button fx:id="btDecifer" layoutY="250.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="300.0" style="-fx-background-color: #1db953;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Button fx:id="btDecifer" layoutY="165.0" mnemonicParsing="false" onAction="#descifrar" prefHeight="48.0" prefWidth="300.0" style="-fx-background-color: #1db953;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -63,7 +55,7 @@
                   <DropShadow />
                </effect>
             </Button>
-            <Button fx:id="btCifer" layoutY="167.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="300.0" style="-fx-background-color: #1db953;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Button fx:id="btCifer" layoutY="82.0" mnemonicParsing="false" onAction="#cifrar" prefHeight="48.0" prefWidth="300.0" style="-fx-background-color: #1db953;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -75,56 +67,22 @@
                <effect>
                   <DropShadow />
                </effect></AnchorPane>
-            <Button layoutX="61.0" mnemonicParsing="false" onAction="#changeWindow" prefHeight="32.0" prefWidth="239.0" style="-fx-background-color: #000;" text="C3K Server v1.0" textFill="#a89f9f" AnchorPane.leftAnchor="61.0" AnchorPane.topAnchor="0.0">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-               <effect>
-                  <DropShadow />
-               </effect>
-            </Button>
-            <Label fx:id="lbCifrar" layoutX="249.0" layoutY="181.0" text="Cifrar">
+            <Label fx:id="lbCifrar" layoutX="249.0" layoutY="96.0" text="Cifrar">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="lbDescifrar" layoutX="231.0" layoutY="264.0" text="Descifrar">
+            <Label fx:id="lbDescifrar" layoutX="231.0" layoutY="179.0" text="Descifrar">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="lbLoadPubK" layoutX="155.0" layoutY="352.0" text="Cargar Clave Pública">
+            <Label fx:id="lbLoadPubK" layoutX="155.0" layoutY="321.0" text="Cargar Clave Pública">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label fx:id="lbLoadPriKey" layoutX="154.0" layoutY="428.0" text="Cargar Clave Privada">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-            <Button fx:id="connectionLed" layoutX="249.0" layoutY="4.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="37.0" style="-fx-background-color: #01fd76; -fx-background-color: #e00011;" styleClass="connection">
-               <effect>
-                  <Glow level="1.0" />
-               </effect>
-            </Button>
-            <TextField fx:id="tfPort" layoutX="61.0" layoutY="80.0" prefHeight="48.0" prefWidth="80.0" promptText="Puerto">
-               <effect>
-                  <DropShadow />
-               </effect>
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </TextField>
-            <Button fx:id="btStartServer" layoutX="151.0" layoutY="80.0" mnemonicParsing="false" onAction="#startServer" prefHeight="48.0" prefWidth="143.0" style="-fx-background-color: #1db953;" AnchorPane.rightAnchor="0.0">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-               <effect>
-                  <DropShadow />
-               </effect>
-            </Button>
-            <Label fx:id="lbPort" layoutX="165.0" layoutY="94.0" text="Arrancar Servidor">
+            <Label fx:id="lbLoadPriKey" layoutX="154.0" layoutY="397.0" text="Cargar Clave Privada">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -134,5 +92,6 @@
             <DropShadow />
          </effect>
       </AnchorPane>
+      <Label text="C3K Lite v1.0" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
    </children>
 </AnchorPane>
