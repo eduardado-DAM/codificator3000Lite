@@ -27,10 +27,10 @@ public class App extends Application {
 
 
         // CONTROLLER DEVICE
-        AppController.setStage(stage); //le pasa el Stage al controlador principal (atributo estático por lo que no es necesario cargar la instancia de la clase)
-        AppController mainMenuController = fxmlLoader.getController(); //obtengo el controlador del menú principal
-        mainMenuController.setBpWindow(mainMenuController.getBpWindow()); //asigna, en el controlador padre, quíen es el famoso BorderPaneWindow
-        mainMenuController.init(); //arranca los funciones iniciales del controlador de la escena
+        AppController.setStage(stage); // le pasa el Stage al controlador principal (atributo estático por lo que no es necesario cargar la instancia de la clase)
+        AppController mainMenuController = fxmlLoader.getController(); // obtengo el controlador del menú principal
+        mainMenuController.setBpWindow(mainMenuController.getBpWindow()); // asigna, en el controlador padre, quién es el famoso BorderPaneWindow
+        mainMenuController.init(); // arranca los funciones iniciales del controlador de la escena
 
 
     }

@@ -6,10 +6,14 @@ import javafx.concurrent.Task;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
-public class FadeTask extends Task<Void> {
+/**
+ * Es necesario lanzar un hilo para desvacener el logo, de lo contrario el usuario tendría que esperar a que el efecto
+ * termine antes de poder interactuar con la interfaz.
+ */
+public class FadeLogoTask extends Task<Void> {
 
     private MainMenuController mainMenuController;
-    public FadeTask(MainMenuController mainMenuController) {
+    public FadeLogoTask(MainMenuController mainMenuController) {
         this.mainMenuController = mainMenuController;
     }
 

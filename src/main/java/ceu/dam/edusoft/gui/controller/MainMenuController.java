@@ -3,7 +3,7 @@ package ceu.dam.edusoft.gui.controller;
 import ceu.dam.edusoft.gui.util.AppKeys;
 import ceu.dam.edusoft.gui.util.C3kUtil;
 import ceu.dam.edusoft.gui.util.FXMLPATH;
-import ceu.dam.edusoft.gui.util.FadeTask;
+import ceu.dam.edusoft.gui.util.FadeLogoTask;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -59,11 +59,10 @@ public class MainMenuController extends AppController implements EventHandler {
     private Label lbExit;
 
 
-
     @Override
     public void init() {
 
-        setCurrentController(this); //se establece como controlador en uso en el controlador padre
+        setCurrentController(this); // se establece como controlador en uso en el controlador padre
 
         generateAppKeys();
 
@@ -146,7 +145,7 @@ public class MainMenuController extends AppController implements EventHandler {
      * Lanza un hilo que hace desaparecer al logo
      */
     private void fadeLogo() {
-        FadeTask fadeTask = new FadeTask(this);
+        FadeLogoTask fadeTask = new FadeLogoTask(this);
         Thread thread = new Thread(fadeTask);
         thread.start();
     }
@@ -194,6 +193,8 @@ public class MainMenuController extends AppController implements EventHandler {
         glow.setLevel(10);
 
 
+        C3kUtil.handleC3KMouseEvents(event);
+
         if (event.getEventType().equals(MouseEvent.MOUSE_ENTERED)) {
             ((Button) event.getSource()).setEffect(glow);
         }
@@ -209,9 +210,11 @@ public class MainMenuController extends AppController implements EventHandler {
             ((Button) event.getSource()).setEffect(null);
         }
 
+
         //Eventos de navegación
 
         if (event.getEventType().equals(ActionEvent.ACTION)) {
+
 
             Button button = (Button) event.getSource();
             String buttonId = button.getId();
@@ -249,9 +252,9 @@ public class MainMenuController extends AppController implements EventHandler {
         if (keyFileChosen != null) {
             System.out.println(oldKeyMsg + getAppKeys().getPublicKeyFile().toPath());
 
-            if (keyType.toUpperCase().equals("PUBLIC")) {
+            if (keyType.equalsIgnoreCase("PUBLIC")) {
                 getAppKeys().setPublicKeyFile(keyFileChosen);
-            } else if (keyType.toUpperCase().equals("PRIVATE")) {
+            } else if (keyType.equalsIgnoreCase("PRIVATE")) {
                 getAppKeys().setPrivateKeyFile(keyFileChosen);
             }
 
