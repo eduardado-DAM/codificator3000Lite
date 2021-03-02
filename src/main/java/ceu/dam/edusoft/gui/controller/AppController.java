@@ -21,8 +21,9 @@ import java.util.Map;
  */
 public abstract class AppController {
 
+    private AppKeys appKeys; // Las claves Pública y Privada de la aplicación
+
     private static Stage stage; //El único escenario de la App
-    private static AppKeys appKeys; // Las claves Pública y Privada de la aplicación
     protected BorderPane borderPaneWindow; // El panel que irá cambiando
     private Map<String, Object> parameters; // Datos no persistentes de la App
     private AppController currentController; // El controlador de la Scene que está en uso
@@ -30,11 +31,16 @@ public abstract class AppController {
 
 
     public AppController() {
+        System.out.println("AppController.AppController");
         parameters = new HashMap<>();
         appKeys = new AppKeys();
     }
 
     //Getters & Setters----------------------------------------------------------------
+
+    public AppKeys getAppKeys() {
+        return appKeys;
+    }
 
     public void setBpWindow(BorderPane borderPane) {
         borderPaneWindow = borderPane;
@@ -42,10 +48,6 @@ public abstract class AppController {
 
     public AppController getCurrentPaneController() {
         return currentPaneController;
-    }
-
-    public AppKeys getAppKeys() {
-        return appKeys;
     }
 
     public void setParameters(Map<String, Object> parameters) {

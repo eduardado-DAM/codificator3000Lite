@@ -108,11 +108,12 @@ public class CiferPanelController extends AppController implements EventHandler 
                 if (!taLienzo.getText().isEmpty()) {
                     String mensajeClaro = taLienzo.getText();
 
-                    if(getAppKeys().haveKeys()){
+                    /*if(getAppKeys().haveKeys()){ //todo porqué no?
                         taCifrado.setText(getAppKeys().cifra(mensajeClaro,getAppKeys().getPublicKeyFile()));
                     }else {
                         System.err.println("La app no tiene keys todavía");
-                    }
+                    }*/
+                    taCifrado.setText(getAppKeys().cifra(mensajeClaro,getAppKeys().getPublicKeyFile()));
 
                 }
 

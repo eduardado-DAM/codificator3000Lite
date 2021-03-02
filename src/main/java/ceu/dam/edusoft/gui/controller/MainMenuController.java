@@ -266,7 +266,7 @@ public class MainMenuController extends AppController implements EventHandler {
                     changePane(FXMLPATH.Panel.DECIFER_PANEL);
                 }
                 if (buttonId.equals(btGenerateKeys.getId())) {
-                    getAppKeys().loadKeys();
+                    getAppKeys().loadKeys(); //todo ??? se supone que aquí estoy cargando las claves en la insancia app
                     if(getAppKeys().haveKeys()){
                         System.out.println("Tengo claves");
                     }

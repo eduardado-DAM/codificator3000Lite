@@ -51,6 +51,10 @@ public class AppKeys {
         System.out.println(appKeys.havePublicKey());
         System.out.println(appKeys.havePrivateKey());
         System.out.println(appKeys.haveKeys());
+
+        String mensajeClaro = "blas";
+        String mensajeCifrado = appKeys.cifra(mensajeClaro, appKeys.getPublicKeyFile());
+        System.out.println("mensaje cifrado " + mensajeCifrado);
     }
 
 
@@ -88,6 +92,7 @@ public class AppKeys {
      * Carga las claves en la clase
      */
     public void loadKeys() {
+        System.out.println("AppKeys.loadKeys " + "cargando claves en la clase" );
         Map<String, File> keyMap = generateKeys(KEY_PATH, PUBLIC_KEY_FILE_NAME, PRIVATE_KEY_FILE_NAME);
         publicKeyFile = keyMap.get("PUBLIC");
         privateKeyFile = keyMap.get("PRIVATE");
@@ -153,6 +158,7 @@ public class AppKeys {
     }
 
     private Map<String, File> generateKeys(String directoryPath, String publicKeyName, String privateKeyName) {
+        System.out.println("AppKeys.generateKeys " + "generando claves");
         Map<String, File> keyMap = null;
 
         try {
@@ -175,20 +181,21 @@ public class AppKeys {
             fileOutputStream2.flush();
             fileOutputStream2.close();
 
-            //todo borrar
-            System.out.println("Claves generadas correctamente");
-            System.out.println("Clave pública ->" + filePublicKey.getPath());
-            System.out.println("Clave privada ->" + filePrivateKey.getPath());
+
 
             //crea el mapa y lo devuelve
             keyMap = new HashMap<>();
             keyMap.put(PUBLIC, filePublicKey);
             keyMap.put(PRIVATE, filePrivateKey);
 
+            //todo borrar
+            System.out.println("AppKeys.generateKeys " + "claves generadas correctamente");
+            System.out.println("Clave pública ->" + filePublicKey.getPath());
+            System.out.println("Clave privada ->" + filePrivateKey.getPath());
 
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+
+        } catch (NoSuchAlgorithmException | IOException e) {
+            System.err.println("Problema al generar claves");
             e.printStackTrace();
         }
 
