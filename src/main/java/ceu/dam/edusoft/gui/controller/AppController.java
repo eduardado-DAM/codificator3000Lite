@@ -30,7 +30,8 @@ public abstract class AppController {
 
 
     public AppController() {
-        parameters = new HashMap<>(); //instanciación del mapa que almacena información no persistente de la app
+        parameters = new HashMap<>();
+        appKeys = new AppKeys();
     }
 
     //Getters & Setters----------------------------------------------------------------
@@ -41,10 +42,6 @@ public abstract class AppController {
 
     public AppController getCurrentPaneController() {
         return currentPaneController;
-    }
-
-    protected void setAppKeys(AppKeys appKeys) {
-        this.appKeys = (appKeys);
     }
 
     public AppKeys getAppKeys() {
@@ -119,7 +116,6 @@ public abstract class AppController {
         appController.setBpWindow(appController.getBpWindow());
 
     }
-
 
     // Métodos abstractos------------------------------------ (algunos no se usan pero están así por si la app crece)
 

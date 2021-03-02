@@ -31,6 +31,14 @@
       </BorderPane>
       <AnchorPane prefHeight="500.0" prefWidth="300.0" style="-fx-background-color: #11253a;" AnchorPane.leftAnchor="0.0">
          <children>
+            <Button fx:id="btGenerateKeys" layoutX="5.0" layoutY="438.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="300.0" style="-fx-background-color: #1db953;">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Button>
             <Button fx:id="btCifer" layoutY="82.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="300.0" style="-fx-background-color: #1db953;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <font>
                   <Font name="System Bold" size="14.0" />
@@ -102,6 +110,11 @@
                      </font>
                   </Label>
                </children></AnchorPane>
+            <Label fx:id="lbGenerateKeys" layoutX="159.0" layoutY="452.0" text="Generar Claves">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
          </children>
          <effect>
             <DropShadow />

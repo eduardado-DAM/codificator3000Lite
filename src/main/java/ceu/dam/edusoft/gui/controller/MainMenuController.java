@@ -41,6 +41,8 @@ public class MainMenuController extends AppController implements EventHandler {
     private Button btLoadPrivateKey;
 
     @FXML
+    private Button btGenerateKeys;
+    @FXML
     private Label lbCifrar;
 
     @FXML
@@ -53,6 +55,9 @@ public class MainMenuController extends AppController implements EventHandler {
     private Label lbLoadPriKey;
 
     @FXML
+    private Label lbGenerateKeys;
+
+    @FXML
     private Button btExit;
 
     @FXML
@@ -62,11 +67,11 @@ public class MainMenuController extends AppController implements EventHandler {
     @Override
     public void init() {
 
+        fadeLogo();
+
         setCurrentController(this); // se establece como controlador en uso en el controlador padre
 
-        generateAppKeys();
-
-        fadeLogo();
+        disableButtons();
 
         addButtonEvents();
 
@@ -75,12 +80,21 @@ public class MainMenuController extends AppController implements EventHandler {
 
     }
 
-    /**
-     * Genera claves y las asigna al controlador padre
-     */
-    private void generateAppKeys() {
-        AppKeys appKeys = new AppKeys();
-        setAppKeys(appKeys);
+    private void checkKeys() {
+
+        if(getAppKeys().havePublicKey()){
+            btCifer.setDisable(false);
+        }
+        if(getAppKeys().havePrivateKey()){
+            btDecifer.setDisable(false);
+        }
+
+
+    }
+
+    private void disableButtons() {
+        btCifer.setDisable(true);
+        btDecifer.setDisable(true);
     }
 
 
@@ -93,6 +107,7 @@ public class MainMenuController extends AppController implements EventHandler {
         lbLoadPriKey.setMouseTransparent(true);
         lbLoadPubK.setMouseTransparent(true);
         lbExit.setMouseTransparent(true);
+        lbGenerateKeys.setMouseTransparent(true);
     }
 
     /**
@@ -110,6 +125,7 @@ public class MainMenuController extends AppController implements EventHandler {
         btLoadPublicKey.addEventHandler(ActionEvent.ACTION, this);
         btLoadPrivateKey.addEventHandler(ActionEvent.ACTION, this);
         btExit.addEventHandler(ActionEvent.ACTION, this);
+        btGenerateKeys.addEventHandler(ActionEvent.ACTION, this);
     }
 
     private void addGraphicEvents() {
@@ -137,6 +153,11 @@ public class MainMenuController extends AppController implements EventHandler {
         btExit.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, this);
         btExit.addEventHandler(MouseEvent.MOUSE_PRESSED, this);
         btExit.addEventHandler(MouseEvent.MOUSE_RELEASED, this);
+
+        btGenerateKeys.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, this);
+        btGenerateKeys.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, this);
+        btGenerateKeys.addEventHandler(MouseEvent.MOUSE_PRESSED, this);
+        btGenerateKeys.addEventHandler(MouseEvent.MOUSE_RELEASED, this);
 
 
     }
@@ -184,6 +205,24 @@ public class MainMenuController extends AppController implements EventHandler {
     }
 
 
+    private void loadKey(String oldKeyMsg, String newKeyMsg, String keyType) {
+
+
+        File keyFileChosen = C3kUtil.selectFile("Select  key");
+        if (keyFileChosen != null) {
+            System.out.println(oldKeyMsg + getAppKeys().getPublicKeyFile().toPath());
+
+            if (keyType.equalsIgnoreCase("PUBLIC")) {
+                getAppKeys().setPublicKeyFile(keyFileChosen);
+            } else if (keyType.equalsIgnoreCase("PRIVATE")) {
+                getAppKeys().setPrivateKeyFile(keyFileChosen);
+            }
+
+
+            System.out.println(newKeyMsg + getAppKeys().getPublicKeyFile().toPath());
+        }
+    }
+
     @Override
     public void handle(Event event) {
 
@@ -226,6 +265,14 @@ public class MainMenuController extends AppController implements EventHandler {
                 if (buttonId.equals(btDecifer.getId())) {
                     changePane(FXMLPATH.Panel.DECIFER_PANEL);
                 }
+                if (buttonId.equals(btGenerateKeys.getId())) {
+                    getAppKeys().loadKeys();
+                    if(getAppKeys().haveKeys()){
+                        System.out.println("Tengo claves");
+                    }
+                    enableButtons();
+
+                }
             } catch (IOException | InterruptedException e) {
                 C3kUtil.informUser(C3kUtil.ErrorString.ES_PANEL_CHANGE_ERROR);
             }
@@ -237,6 +284,9 @@ public class MainMenuController extends AppController implements EventHandler {
             }
             if (buttonId.equals(btExit.getId())) {
                 Platform.exit();
+                /*getAppKeys().deleteGeneratedKeyes();*/ //todo ??
+                //todo eliminar las claves generadas?
+                getAppKeys().deleteGeneratedKeyes(AppKeys.KEY_PATH, AppKeys.PUBLIC_KEY_FILE_NAME,AppKeys.PRIVATE_KEY_FILE_NAME);
             }
 
 
@@ -245,22 +295,9 @@ public class MainMenuController extends AppController implements EventHandler {
 
     }
 
-    private void loadKey(String oldKeyMsg, String newKeyMsg, String keyType) {
-
-
-        File keyFileChosen = C3kUtil.selectFile("Select  key");
-        if (keyFileChosen != null) {
-            System.out.println(oldKeyMsg + getAppKeys().getPublicKeyFile().toPath());
-
-            if (keyType.equalsIgnoreCase("PUBLIC")) {
-                getAppKeys().setPublicKeyFile(keyFileChosen);
-            } else if (keyType.equalsIgnoreCase("PRIVATE")) {
-                getAppKeys().setPrivateKeyFile(keyFileChosen);
-            }
-
-
-            System.out.println(newKeyMsg + getAppKeys().getPublicKeyFile().toPath());
-        }
+    private void enableButtons() {
+        btCifer.setDisable(false);
+        btDecifer.setDisable(false);
     }
 
 }

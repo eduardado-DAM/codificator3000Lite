@@ -1,7 +1,6 @@
 package ceu.dam.edusoft.gui.util;
 
 import ceu.dam.edusoft.gui.controller.AppController;
-import ceu.dam.edusoft.service.RSAService;
 import javafx.event.Event;
 import javafx.scene.control.Button;
 import javafx.scene.effect.ColorAdjust;
@@ -25,6 +24,7 @@ public class C3kUtil {
     public static void handleC3KMouseEvents(Event event) {
         Glow glow = new Glow();
         glow.setLevel(10);
+
         if (event.getEventType().equals(MouseEvent.MOUSE_ENTERED)) {
             ((Button) event.getSource()).setEffect(glow);
         }
@@ -57,7 +57,7 @@ public class C3kUtil {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(title);
 
-        fileChooser.setInitialDirectory(new File(RSAService.KEY_PATH));
+        fileChooser.setInitialDirectory(new File(AppKeys.KEY_PATH));
         filechosen = fileChooser.showOpenDialog(AppController.getStage());
 
         return filechosen;

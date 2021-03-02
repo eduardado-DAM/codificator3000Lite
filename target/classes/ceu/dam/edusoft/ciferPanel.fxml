@@ -16,7 +16,7 @@
             <Image url="@img/c3kNightBackground.png" />
          </image>
       </ImageView>
-      <Button fx:id="btCifrar" layoutX="100.0" layoutY="226.0" mnemonicParsing="false" onAction="#cifrar" prefHeight="48.0" prefWidth="300.0" style="-fx-background-color: #1db953;">
+      <Button fx:id="btCifrar" layoutX="100.0" layoutY="226.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="300.0" style="-fx-background-color: #1db953;">
          <effect>
             <DropShadow />
          </effect>

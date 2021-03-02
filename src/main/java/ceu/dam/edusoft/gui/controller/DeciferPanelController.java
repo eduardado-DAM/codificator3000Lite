@@ -1,7 +1,7 @@
 package ceu.dam.edusoft.gui.controller;
 
+import ceu.dam.edusoft.gui.util.AppKeys;
 import ceu.dam.edusoft.gui.util.C3kUtil;
-import ceu.dam.edusoft.service.RSAService;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -103,14 +103,14 @@ public class DeciferPanelController extends AppController implements EventHandle
                 if (!taLienzo.getText().isEmpty()) {
                     String mensajeCifrado = taLienzo.getText();
 
-                    if (getAppKeys().getPrivateKeyFile() != null) {
+                    /*if (getAppKeys().getPrivateKeyFile() != null) {
                         File privateFileKey = getAppKeys().getPrivateKeyFile();
-                        mensajeCifrado = RSAService.descifra(mensajeCifrado, privateFileKey);
+                        mensajeCifrado = AppKeys.descifra(mensajeCifrado, privateFileKey);
                         taDescifrado.setText(mensajeCifrado);
 
                     } else {
                         System.err.println("La app no tiene clave privada cargada");
-                    }
+                    }*/
 
                 }
 

@@ -1,10 +1,11 @@
 package ceu.dam.edusoft.gui.controller;
 
+import ceu.dam.edusoft.gui.util.AppKeys;
 import ceu.dam.edusoft.gui.util.C3kUtil;
-import ceu.dam.edusoft.service.RSAService;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -29,29 +30,9 @@ public class CiferPanelController extends AppController implements EventHandler 
     private TextArea taLienzo;
 
 
-
-    @FXML
-    void cifrar(ActionEvent event) {
-
-        if (!taLienzo.getText().isEmpty()) {
-            String mensajeClaro = taLienzo.getText();
-
-            if(getAppKeys().getPublicKeyFile() != null){
-                File publicKeyfile = getAppKeys().getPublicKeyFile();
-                String mensajeCifrado = RSAService.cifra(mensajeClaro,publicKeyfile);
-                taCifrado.setText(mensajeCifrado);
-
-            }else{
-                System.err.println("La app no tiene clave pública cargada");
-            }
-
-        }
-
-    }
-
-
     @Override
-    public void init()  {
+    public void init() {
+        System.out.println("CiferPanelController.init");
 
         setCurrentPaneController(this); //establece el controlador de Panel en uso
 
@@ -62,12 +43,17 @@ public class CiferPanelController extends AppController implements EventHandler 
 
     }
 
+
     private void addButtonEvents() {
+        System.out.println("CiferPanelController.addButtonEvents");
+
         btCifrar.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, this);
         btCifrar.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, this);
-
         btCifrar.addEventHandler(MouseEvent.MOUSE_PRESSED, this);
         btCifrar.addEventHandler(MouseEvent.MOUSE_RELEASED, this);
+
+        btCifrar.addEventHandler(ActionEvent.ACTION, this);
+
 
     }
 
@@ -107,7 +93,33 @@ public class CiferPanelController extends AppController implements EventHandler 
     @Override
     public void handle(Event event) {
 
-        C3kUtil.handleC3KMouseEvents(event);
+        EventType eventType = event.getEventType();
+        // los eventos para hacer brillar los botones se repiten mucho
+        if (eventType.equals(MouseEvent.MOUSE_ENTERED) || eventType.equals(MouseEvent.MOUSE_EXITED)) {
+
+            C3kUtil.handleC3KMouseEvents(event);
+        } else if (event.getEventType().equals(ActionEvent.ACTION)) {
+
+            Button button = (Button) event.getSource();
+            String buttonId = button.getId();
+
+            if (buttonId.equals(btCifrar.getId())) {
+
+                if (!taLienzo.getText().isEmpty()) {
+                    String mensajeClaro = taLienzo.getText();
+
+                    if(getAppKeys().haveKeys()){
+                        taCifrado.setText(getAppKeys().cifra(mensajeClaro,getAppKeys().getPublicKeyFile()));
+                    }else {
+                        System.err.println("La app no tiene keys todavía");
+                    }
+
+                }
+
+            }
+
+
+        }
 
 
     }
