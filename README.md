@@ -1,6 +1,6 @@
 # CodificatorFX3000Lite
 
-Una aplicación de escritorio usando las librerías de JavaFx que permite codificar y decodificar mensajes usando el sistema criptográfico [RSA](https://es.wikipedia.org/wiki/RSA). 
+A JavaFx desktop application to encode and decode messages using [RSA]([https://es.wikipedia.org/wiki/RSA](https://en.wikipedia.org/wiki/RSA_(cryptosystem))) cryptosystem.
 
 <img src="src/main/resources/ceu/dam/edusoft/img/c3kDay.png" alt="codificator fx 3000 Logo" width="200">
 <img src="src/main/resources/ceu/dam/edusoft/img/c3kNight.png" alt="codificator fx 3000 Logo" width="200">
@@ -30,11 +30,3 @@ Una aplicación de escritorio usando las librerías de JavaFx que permite codifi
 ## Demo v1.0
 
 ![Demo](https://media.giphy.com/media/fr4tqR3PNJadOEoi6w/giphy.gif)
-
-## Feedback
-
-- Lo de generar las claves al inicio no es necesario. La aplicación es para cifrar y descifrar. Por tanto, cuando yo quiera cifrar, será para enviar un mensaje a alguien cifrado con su clave pública (me la tiene que dar). Y cuando vaya a descifrar algo que me envíen, usaré mi clave privada  (previamente generada porque alguien ha usado la clave pública). En resumen, generar las claves nuevas al inicio no tiene sentido. Sí lo tendría una opción adicional para generar claves, por si el usuario no las tiene de antes.
-- No informas al usuario de cómo ha ido la carga de claves. Ni si ya tengo alguna clave cargada.
-- Me deja cifrar y descifrar sin cargar previamente certificados. Entiendo que usas el que generas por defecto. Como he comentado antes, no es correcto.
-- No controlas el error de descifrado. Por ejemplo, cuando uso una clave privada incorrecta... Boom!! y el usuario no se entera de nada.
-- Muy bien el diseño.
